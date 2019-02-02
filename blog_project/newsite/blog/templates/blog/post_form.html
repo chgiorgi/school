@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <form class="post-form" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <button type="submit" class="save btn btn-default">save</button>
+    </form>
+    <script>var editor=new MediumEditor('.editable');</script><!-- gets a widget from forms.py "editable" is class-->
+{% endblock %}

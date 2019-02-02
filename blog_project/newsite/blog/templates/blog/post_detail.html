@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>{{ post.title }}</h1>
+
+    {% if post.published_date %}
+        {{ post.published_date }}
+    {% else %}
+        <a class="btn btn-primary" href="{% url 'post_publish' pk=post.pk %}">Publish</a>
+        <!-- ეს ფუნქცია ამოწმებს არსებობს თუ არა პოსტ დეითი თუ არ არსებობს მაშინ პოსტის პრაიმერი ქიი-ს უგზავნის პოსტ_ფაბლიშ-ს. ხო და თყ პოსტი არ არსებობს პრაიმერი ქიი საიდან აქ რომელიც გადაეცემა სხვას   -->
+
+    {% endif %}
+
+    <p>{{ post.text|safe|linebreaksbr }}</p><!-- ეს გავტესტოთ რას შვება მერე-->
+
+    {% if user.is_authenticated %}
+        <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}">
+            <span class="glyphicon glyphicon-pencil"></span>
+        </a>
+        <a class="btn btn-primary" href="{% url 'post_remove' pk=post.pk %}">
+            <span class="glyphicon glyphicon-remove"></span>
+        </a>
+    {% endif %}
+
+    <a class="btn btn-primary btn-comment" href="{% url 'add_comment_to_post' pk=post.pk %}">Add Comment</a>
+
+    <div class="container">
+        <br>
+        {% for comment in post.commetns.all %}
+            {% if user.is_authenticated or comment.approved_comment %}
+                {{ comment.created_date }}
+                {% if not comment.approved_comment %}
+                    <a class="btn btn-primary " href="{% url 'comment_remove' pk=comment.pk %}">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </a>
+                    <a class="btn btn-primary " href="{% url 'comment_approve' pk=comment.pk %}">
+                        <span class="glyphicon glyphicon-ok"></span>
+                    </a>
+                {% endif %}
+
+                <p>{{ comment.text|safe|linebreaks }}</p>
+                <p>Posted by: {{ comment.author }}</p>
+
+            {% endif %}
+
+            {% empty %}
+        {% endfor %}
+    </div>
+
+{% endblock %}
