@@ -1,9 +1,9 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.views import generic
-from django.contrib import messages
+
 from .models import Group, GroupMember
 
 
@@ -14,12 +14,14 @@ class CreateGroup(LoginRequiredMixin, generic.CreateView):
 
 class SingleGroup(generic.DetailView):
 	model = Group
+	template_name = 'groups/group_detail.html'
 	context_object_name = 'group'
 
 
 class ListGroup(generic.ListView):
 	model = Group
 	template_name = 'groups/group_list.html'
+	context_object_name = "groups"
 
 
 class JoinGroup(LoginRequiredMixin, generic.RedirectView):

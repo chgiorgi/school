@@ -11,24 +11,24 @@ User = get_user_model()
 
 
 class Post(models.Model):
-	user = models.ForeignKey(get_user_model(), related_name='posts', on_delete=False)
-	created_at = models.DateTimeField(auto_now=True)
-	message = models.TextField()
-	message_html = models.TextField(editable=False)
-	group = models.ForeignKey(Group, related_name='posts', null=True, blank=True, on_delete=False)
+    user = models.ForeignKey(get_user_model(), name='user', related_name='posts', on_delete=False)
+    created_at = models.DateTimeField(auto_now=True)
+    message = models.TextField()
+    message_html = models.TextField(editable=False)
+    group = models.ForeignKey(Group, related_name='posts', name='group', null=True, blank=True, on_delete=False)
 
-	def __str__(self):
-		return self.message
+    def __str__(self):
+        return self.message
 
-	def save(self, *args, **kwargs):
-		self.message_html = misaka.html(self.message)
-		super().save(*args, **kwargs)
+    def save(self, *args, **kwargs):
+        self.message_html = misaka.html(self.message)
+        super().save(*args, **kwargs)
 
-	def get_absolute_url(self):
-		return reverse('posts:single',
-					   kwargs={'username': self.user.username,
-							   'pk': self.pk})
+    def get_absolute_url(self):
+        return reverse('posts:single',
+                       kwargs={'username': self.user.username,
+                               'pk': self.pk})
 
-	class Meta:
-		ordering = ['-created_at']
-		unique_together = ['user', 'message']
+    class Meta:
+        ordering = ['-created_at']
+        unique_together = ['user', 'message']
