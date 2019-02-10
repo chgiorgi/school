@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'spacex/css/master.css' %}">
+
+</head>
+<body>
+
+<nav class="navbar  mynav" role="navigation" id="navbar">
+    <div class="container">
+
+        <a class="navbar-brand mynav" href="{% url 'home' %}">Star Social</a>
+
+        <ul class="btn">
+            {% if user.is_authenticated %}
+                <li class="btn btn-outline-light"><a href="{% url 'posts:create' %}" class="btn btn-simple">Post</a></li>
+                <li class="btn btn-outline-light  "><a href="{% url 'groups:all' %}" class="btn btn-simple">Groups</a></li>
+                <li class="btn btn-outline-light "><a href="{% url 'groups:create' %}" class="btn btn-simple">Create Group</a></li>
+                <li class="btn btn-outline-light"><a href="{% url 'accounts:logout' %}"
+                                                                 class="btn btn-simple">Log out</a></li>
+            {% else %}
+                <li class="btn my-2 my-sm-0"><a href="{% url 'groups:all' %}" class="btn btn-simple">Groups</a></li>
+                <li class="btn my-2 my-sm-0"><a href="{% url 'accounts:login' %}"
+                                                                 class="btn btn-simple">Log in</a></li>
+                <li class="btn my-2 my-sm-0"><a href="{% url 'accounts:signup' %}"
+                                                                 class="btn btn-simple">Sign up</a></li>
+            {% endif %}
+        </ul>
+
+
+    </div>
+</nav>
+<div class="container mycontent">
+    {% block content %}
+
+    {% endblock %}
+
+</div>
+
+
+</body>
+</html>
